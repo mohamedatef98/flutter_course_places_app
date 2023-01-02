@@ -5,7 +5,7 @@ import 'package:project_5/models/location.dart';
 class Place {
   final String id;
   final String title;
-  final Location location;
+  final Location? location;
   final File image;
 
   const Place({

@@ -1,6 +1,7 @@
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:project_5/provided_models/great_places.dart';
+import 'package:project_5/provided_models/places_storage.dart';
 import 'package:provider/provider.dart';
 
 class AppProviders extends StatelessWidget {
@@ -12,8 +13,14 @@ class AppProviders extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider.value(
-      value: GreatPlaces(),
+    return MultiProvider(
+      providers: [
+        Provider<PlacesStorage>(create: (_) => PlacesStorage()),
+        ChangeNotifierProxyProvider<PlacesStorage, GreatPlaces>(
+          create: (context) => GreatPlaces(null),
+          update: (context, placesStorage, _) => GreatPlaces(placesStorage),
+        )
+      ],
       child: child,
     );
   }

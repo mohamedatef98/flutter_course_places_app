@@ -6,18 +6,18 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:project_5/utils/imagePicker.dart';
 
-class ImageInput extends StatefulWidget {
-  const ImageInput({super.key});
+class ImageInput extends StatelessWidget {
+  final void Function(File) onImagePick;
+  final File? image;
+  const ImageInput({
+    super.key,
+    required this.onImagePick,
+    this.image
+  });
 
-  @override
-  State<ImageInput> createState() => _ImageInputState();
-}
-
-class _ImageInputState extends State<ImageInput> {
-  File? _storedImage;
   Widget renderStoredImage() {
-    if(_storedImage != null) {
-      return Image.file(_storedImage!);
+    if(image != null) {
+      return Image.file(image!);
     }
     else {
       return const Text(
@@ -29,9 +29,9 @@ class _ImageInputState extends State<ImageInput> {
 
   void takePicture() {
     imagePicker().then((image) {
-      setState(() {
-        _storedImage = image;
-      });
+      if(image != null) {
+        onImagePick(image);
+      }
     });
   }
 
