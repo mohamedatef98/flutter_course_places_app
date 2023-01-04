@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:project_5/models/location.dart';
 import 'package:project_5/screens/map.dart';
 import 'package:project_5/utils/get_user_location_preview.dart';

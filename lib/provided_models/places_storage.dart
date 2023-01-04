@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
+import 'package:project_5/models/location.dart';
 import 'package:project_5/models/place.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -16,7 +16,10 @@ class PlacesStorage {
       {
         'id': place.id,
         'title': place.title,
-        'image': place.image.path
+        'image': place.image.path,
+        'lat': place.location.lat,
+        'long': place.location.long,
+        'address': place.location.address
       },
       conflictAlgorithm: ConflictAlgorithm.replace
     );
@@ -28,10 +31,16 @@ class PlacesStorage {
     final dbRows = await _db!.query(_tableName);
     await _ensureDbDisposed();
     return dbRows.map((dbRow) {
+      final location = Location(
+        lat: dbRow['lat']! as double,
+        long: dbRow['long']! as double,
+        address: dbRow['address']! as String,
+      );
+
       return Place(
         id: dbRow['id']! as String,
         title: dbRow['title']! as String,
-        location: null,
+        location: location,
         image: File(dbRow['image']! as String)
       );
     }).toList();
@@ -45,14 +54,18 @@ class PlacesStorage {
         onCreate: (db, version) async {
           await db.execute('''
               CREATE TABLE $_tableName (
-                id TEXT PRIMARY_KEY,
-                title TEXT NOT_NULL,
-                image TEXT NOT_NULL
+                id      TEXT PRIMARY_KEY,
+                title   TEXT NOT_NULL,
+                image   TEXT NOT_NULL,
+                lat     REAL NOT_NULL,
+                long    REAL NOT_NULL,
+                address TEXT NOT_NULL
               )
           ''');
         },
         version: 1
       );
+      // await deleteDatabase('$dbPath/$_dbName');
     }
   }
 

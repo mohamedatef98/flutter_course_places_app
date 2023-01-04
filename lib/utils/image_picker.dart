@@ -13,7 +13,7 @@ Future<File?> imagePicker() async {
 
   if(image != null) {
     final appDocsDir = await getApplicationDocumentsDirectory();
-    final copiedImagePath = '${appDocsDir.path}/${image!.name}';
+    final copiedImagePath = '${appDocsDir.path}/${image.name}';
     await image.saveTo(copiedImagePath);
 
     return File(copiedImagePath);

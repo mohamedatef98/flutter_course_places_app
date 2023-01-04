@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:project_5/models/place.dart';
 import 'package:project_5/provided_models/great_places.dart';
 import 'package:project_5/screens/add_place.dart';
 import 'package:provider/provider.dart';
@@ -26,6 +23,11 @@ class PlacesListScreen extends StatelessWidget {
                 backgroundImage: FileImage(place.image),
               ),
               title: Text(place.title),
+              subtitle: Text(
+                place.location.address,
+                softWrap: false,
+              ),
+              onTap: () {},
             );
           },
           itemCount: places.length,

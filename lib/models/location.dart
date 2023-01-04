@@ -8,4 +8,10 @@ class Location {
     required this.long,
     this.address = ''
   });
+
+  Location.addAdress(Location location, String address) : this(
+    address: address,
+    lat: location.lat,
+    long: location.long
+  );
 }

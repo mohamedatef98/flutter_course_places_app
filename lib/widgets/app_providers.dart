@@ -1,5 +1,4 @@
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/material.dart';
 import 'package:project_5/provided_models/great_places.dart';
 import 'package:project_5/provided_models/places_storage.dart';
 import 'package:provider/provider.dart';

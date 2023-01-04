@@ -1,8 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:project_5/models/location.dart';
 import 'package:project_5/provided_models/great_places.dart';
 import 'package:project_5/widgets/image_input.dart';

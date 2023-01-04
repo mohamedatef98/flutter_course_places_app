@@ -1,5 +1,10 @@
+import 'dart:convert';
+
+import 'package:http/http.dart';
 import 'package:location/location.dart';
 import 'package:project_5/models/location.dart' as location_model;
+
+const _googleApiKey = 'AIzaSyCXH537vUkFjncxVYhxZTcH87eahrsfgbg';
 
 Future<location_model.Location> getUserLocation() async {
   Location location = Location();
@@ -24,11 +29,22 @@ Future<location_model.Location> getUserLocation() async {
 }
 
 String getLocationPreviewUrl(location_model.Location location) {
-  const googleApiKey = "AIzaSyCXH537vUkFjncxVYhxZTcH87eahrsfgbg";
-
   final lat = location.lat.toStringAsFixed(5);
   final long = location.long.toStringAsFixed(5);
 
-  return "https://maps.googleapis.com/maps/api/staticmap?center=$lat,$long&zoom=16&size=600x300&maptype=roadmap&markers=color:red%7Clabel:S%7C$lat,$long&key=$googleApiKey";
+  return "https://maps.googleapis.com/maps/api/staticmap?center=$lat,$long&zoom=16&size=600x300&maptype=roadmap&markers=color:red%7Clabel:S%7C$lat,$long&key=$_googleApiKey";
+}
+
+Future<String> getLocationAddress(location_model.Location location) async {
+  final lat = location.lat.toStringAsFixed(5);
+  final long = location.long.toStringAsFixed(5);
+
+  final requestUri = Uri.https("maps.googleapis.com", "/maps/api/geocode/json", {
+    "latlng": "$lat,$long",
+    "key": _googleApiKey
+  });
+  final response = await get(requestUri);
+  final responseJson = jsonDecode(response.body) as dynamic;
+  return responseJson["results"][0]["formatted_address"] as String;
 }
 
