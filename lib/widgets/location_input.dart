@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:project_5/screens/map.dart';
 import 'package:project_5/utils/get_user_location_preview.dart';
 
 class LocationInput extends StatefulWidget {
@@ -36,6 +37,13 @@ class _LocationInputState extends State<LocationInput> {
     });
   }
 
+  void _openMap() {
+    Navigator.of(context).push(MaterialPageRoute(
+      fullscreenDialog: true,
+      builder: (context) => const MapScreen(isSelecting: true,),
+    ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -61,7 +69,7 @@ class _LocationInputState extends State<LocationInput> {
               label: const Text('Current Location')
             ),
             TextButton.icon(
-              onPressed: () {},
+              onPressed: _openMap,
               icon: const Icon(Icons.map),
               label: const Text('Select on map')
             ),
