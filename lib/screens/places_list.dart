@@ -6,39 +6,21 @@ import 'package:project_5/provided_models/great_places.dart';
 import 'package:project_5/screens/add_place.dart';
 import 'package:provider/provider.dart';
 
-class PlacesListScreen extends StatefulWidget {
+class PlacesListScreen extends StatelessWidget {
   const PlacesListScreen({super.key});
 
-  @override
-  createState() => PlacesListScreenState();
-}
-
-class PlacesListScreenState extends State<PlacesListScreen> {
-  late List<Place> _places;
-  late bool loading = true;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    Provider.of<GreatPlaces>(context).getPlaces().then((places) {
-      setState(() {
-        loading = false;
-        _places = places;
-      });
-    });
-  }
-
-  Widget _renderPlaces() {
-    if (loading == true) {
+  Widget _renderPlaces(BuildContext context, GreatPlaces greatPlaces, _) {
+    if (greatPlaces.isLoading == true) {
       return const Center(
         child: CircularProgressIndicator(),
       );
     }
     else {
-      if(_places.isNotEmpty) {
+      final places = greatPlaces.places;
+      if(places.isNotEmpty) {
         return ListView.builder(
           itemBuilder: (context, index) {
-            final place = _places[index];
+            final place = places[index];
             return ListTile(
               leading: CircleAvatar(
                 backgroundImage: FileImage(place.image),
@@ -46,7 +28,7 @@ class PlacesListScreenState extends State<PlacesListScreen> {
               title: Text(place.title),
             );
           },
-          itemCount: _places.length,
+          itemCount: places.length,
         );
       }
       else {
@@ -69,7 +51,9 @@ class PlacesListScreenState extends State<PlacesListScreen> {
           )
         ],
       ),
-      body: _renderPlaces()
+      body: Consumer<GreatPlaces>(
+        builder: _renderPlaces
+      )
     );
   }
 }

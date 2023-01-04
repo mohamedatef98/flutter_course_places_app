@@ -5,10 +5,19 @@ import 'package:project_5/models/place.dart';
 import 'package:project_5/provided_models/places_storage.dart';
 
 class GreatPlaces with ChangeNotifier {
-  final List<Place> _items = [];
+  final List<Place> _places = [];
+  bool _isLoading = true;
   final PlacesStorage? _placesStorage;
 
-  GreatPlaces(this._placesStorage);
+  bool get isLoading => _isLoading;
+
+  List<Place> get places => [..._places];
+
+  GreatPlaces(this._placesStorage) {
+    if (_placesStorage != null) {
+      loadPlaces();
+    }
+  }
 
   Future<void> addPlace(String title, File image) async {
     final place = Place(
@@ -17,14 +26,17 @@ class GreatPlaces with ChangeNotifier {
       location: null,
       image: image
     );
-    _items.add(place);
+    _places.add(place);
     notifyListeners();
     assert(_placesStorage != null);
     await _placesStorage!.storePlace(place);
   }
 
-  Future<List<Place>> getPlaces() async {
+  Future<void> loadPlaces() async {
     assert(_placesStorage != null);
-    return await _placesStorage!.getPlaces();
+    _places.clear();
+    (await _placesStorage!.getPlaces()).forEach((place) => _places.add(place));
+    _isLoading = false;
+    notifyListeners();
   }
 }
