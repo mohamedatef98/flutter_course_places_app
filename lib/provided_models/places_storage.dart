@@ -14,9 +14,9 @@ class PlacesStorage {
     await _db!.insert(
       _tableName,
       {
-      'id': place.id,
-      'title': place.title,
-      'image': place.image.path
+        'id': place.id,
+        'title': place.title,
+        'image': place.image.path
       },
       conflictAlgorithm: ConflictAlgorithm.replace
     );

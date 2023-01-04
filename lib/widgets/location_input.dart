@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:project_5/models/location.dart';
 import 'package:project_5/screens/map.dart';
 import 'package:project_5/utils/get_user_location_preview.dart';
 
 class LocationInput extends StatefulWidget {
-  const LocationInput({super.key});
+  final void Function(Location) onLocationSelected;
+  const LocationInput({
+    super.key,
+    required this.onLocationSelected
+  });
 
   @override
   State<LocationInput> createState() => _LocationInputState();
@@ -29,19 +34,28 @@ class _LocationInputState extends State<LocationInput> {
     }
   }
 
-  void _fetchUserLocation() async {
-    final previewUrl = await getUserLocationPreviewImageUrl();
+  void setPreviewUrlForLocation(Location location) {
+    final previewUrl = getLocationPreviewUrl(location);
+    widget.onLocationSelected(location);
     setState(() {
       _previewImageUrl = previewUrl;
-      print(previewUrl);
     });
   }
 
+  void _fetchUserLocation() async {
+    final userLocation = await getUserLocation();
+    setPreviewUrlForLocation(userLocation);
+  }
+
   void _openMap() {
-    Navigator.of(context).push(MaterialPageRoute(
+    Navigator.of(context).push<Location>(MaterialPageRoute(
       fullscreenDialog: true,
       builder: (context) => const MapScreen(isSelecting: true,),
-    ));
+    )).then((pickedLocation) {
+      if(pickedLocation != null) {
+        setPreviewUrlForLocation(pickedLocation);
+      }
+    });
   }
 
   @override

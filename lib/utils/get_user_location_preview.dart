@@ -1,7 +1,7 @@
 import 'package:location/location.dart';
+import 'package:project_5/models/location.dart' as location_model;
 
-Future<String> getUserLocationPreviewImageUrl() async {
-  const googleApiKey = "AIzaSyCXH537vUkFjncxVYhxZTcH87eahrsfgbg";
+Future<location_model.Location> getUserLocation() async {
   Location location = Location();
 
   bool serviceEnabled = await location.serviceEnabled();
@@ -19,8 +19,15 @@ Future<String> getUserLocationPreviewImageUrl() async {
   }
 
   final locationData = await location.getLocation();
-  final lat = locationData.latitude!.toStringAsFixed(5);
-  final long = locationData.longitude!.toStringAsFixed(5);
+  return location_model.Location(lat: locationData.latitude!, long: locationData.longitude!);
+ 
+}
+
+String getLocationPreviewUrl(location_model.Location location) {
+  const googleApiKey = "AIzaSyCXH537vUkFjncxVYhxZTcH87eahrsfgbg";
+
+  final lat = location.lat.toStringAsFixed(5);
+  final long = location.long.toStringAsFixed(5);
 
   return "https://maps.googleapis.com/maps/api/staticmap?center=$lat,$long&zoom=16&size=600x300&maptype=roadmap&markers=color:red%7Clabel:S%7C$lat,$long&key=$googleApiKey";
 }
