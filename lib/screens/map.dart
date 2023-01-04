@@ -18,22 +18,34 @@ class MapScreen extends StatefulWidget {
 class _MapScreenState extends State<MapScreen> {
   LatLng? _pickedLocation;
 
+  LatLng get _initialLocationLatLng => LatLng(widget.initialLocation.lat, widget.initialLocation.long);
+
   CameraPosition get _initialCameraPosition =>  CameraPosition(
-    target: LatLng(widget.initialLocation.lat, widget.initialLocation.long),
+    target: _initialLocationLatLng,
     zoom: 16
   );
 
   Set<Marker> get _markers {
-    if (_pickedLocation == null) {
-      return <Marker>{};
-    }
-    else {
+    if(widget.isSelecting == false) {
       return {
         Marker(
           markerId: const MarkerId("m1"),
-          position: _pickedLocation!
+          position: _initialLocationLatLng
         )
-      };
+      }; 
+    }
+    else {
+      if (_pickedLocation == null) {
+        return <Marker>{};
+      }
+      else {
+        return {
+          Marker(
+            markerId: const MarkerId("m1"),
+            position: _pickedLocation!
+          )
+        };
+      }
     }
   }
 

@@ -28,6 +28,7 @@ class _LocationInputState extends State<LocationInput> {
       return Image.network(
         _previewImageUrl!,
         fit: BoxFit.cover,
+        width: double.infinity,
       );
     }
   }

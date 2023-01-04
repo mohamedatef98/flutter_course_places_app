@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:project_5/models/place.dart';
 import 'package:project_5/provided_models/great_places.dart';
 import 'package:project_5/screens/add_place.dart';
+import 'package:project_5/screens/place_details.dart';
 import 'package:provider/provider.dart';
 
 class PlacesListScreen extends StatelessWidget {
   const PlacesListScreen({super.key});
+
+  void _openPlaceDetails(BuildContext context, Place place) {
+    Navigator.of(context).pushNamed(PlaceDetailsScreen.routeName, arguments: place);
+  }
 
   Widget _renderPlaces(BuildContext context, GreatPlaces greatPlaces, _) {
     if (greatPlaces.isLoading == true) {
@@ -27,7 +33,7 @@ class PlacesListScreen extends StatelessWidget {
                 place.location.address,
                 softWrap: false,
               ),
-              onTap: () {},
+              onTap:  () => _openPlaceDetails(context, place),
             );
           },
           itemCount: places.length,
